@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const restarauntSchema = new mongoose.Schema({
+const restaurantSchema = new mongoose.Schema({
   name: String,
   cuisine: String,
 });
@@ -9,4 +9,4 @@ const restarauntSchema = new mongoose.Schema({
 
 // Exporting the whole fruits array
 // and it will be named whatever we require as
-module.exports = mongoose.model('Restaraunt', restarauntSchema);
+module.exports = mongoose.model('Restaurant', restaurantSchema);

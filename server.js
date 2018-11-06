@@ -32,7 +32,7 @@ app.use(cors(corsOptions));
 const restarauntController = require('./controllers/restarauntController');
 const authController  = require('./controllers/authController');
 
-// app.use('/api/v1/playlists', playlistController);
+app.use('/api/v1/restaraunt', restarauntController);
 app.use('/auth', authController);
 
 app.listen(process.env.PORT || 9000, () => {

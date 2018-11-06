@@ -5,7 +5,7 @@ const router = express.Router();
 // require Our Model - Remember Model is
 // a representation of our data
 // The model should capitalized
-const Restaraunt = require('../models/Restaraunt');
+const Restaurant = require('../models/restaurant');
 // Creating the index route
 // index route should show all the fruits
  router.get('/', async (req, res, next) => {
@@ -13,12 +13,12 @@ const Restaraunt = require('../models/Restaraunt');
   console.log(req.body, ' this is get all')
      try  {
 
-      const allRestaraunts = await Restaraunt.find();
+      const allRestaurants = await Restaurant.find();
 
       // This is the response to react
       res.json({
         status: 200,
-        data: allRestaraunts
+        data: allRestaurants
       });
 
     } catch (err){
@@ -33,11 +33,11 @@ router.post('/', async (req, res) => {
 
   try {
     console.log(req.body, ' this is req.body');
-    const createdRestaraunt = await Restaraunt.create(req.body);
+    const createdRestaurant = await Restaurant.create(req.body);
     console.log('response happening?')
     res.json({
       status: 200,
-      data: createdRestaraunt
+      data: createdRestaurant
     });
 
   } catch(err){
@@ -55,10 +55,10 @@ router.get('/:id', async (req, res, next) => {
 
      try  {
 
-        const foundRestaraunt = await Restaraunt.findById(req.params.id);
+        const foundRestaurant = await Restaurant.findById(req.params.id);
         res.json({
           status: 200,
-          data: foundRestaraunt
+          data: foundRestaurant
         });
 
       } catch (err){
@@ -72,10 +72,10 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res) => {
 
   try {
-    const updatedRestaraunt = await Restaraunt.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.json({
       status: 200,
-      data: updatedRestaraunt
+      data: updatedRestaurant
     });
   } catch(err){
     res.send(err)
@@ -87,10 +87,10 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
   try {
-     const deletedRestaraunt = await Restaraunt.findByIdAndRemove(req.params.id);
+     const deletedRestaurant = await Restaurant.findByIdAndRemove(req.params.id);
       res.json({
         status: 200,
-        data: deletedRestaraunt
+        data: deletedRestaurant
       });
   } catch(err){
     res.send(err);
