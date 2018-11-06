@@ -5,7 +5,7 @@ const router = express.Router();
 // require Our Model - Remember Model is
 // a representation of our data
 // The model should capitalized
-const Restaurant = require('../models/restaurant');
+const Restaurant = require('../models/restaraunt');
 // Creating the index route
 // index route should show all the fruits
  router.get('/', async (req, res, next) => {
