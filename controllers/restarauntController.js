@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   try {
     console.log(req.body, ' this is req.body');
     const createdRestaurant = await Restaurant.create(req.body);
-    console.log('response happening?')
+    console.log('response happening?', createdRestaurant)
     res.json({
       status: 200,
       data: createdRestaurant

@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const restaurantSchema = new mongoose.Schema({
   name: String,
   featured_image: String,
+  cuisines: String,
 });
+
 
 
 // Exporting the whole fruits array
