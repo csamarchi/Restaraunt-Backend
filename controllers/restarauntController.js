@@ -3,15 +3,18 @@ const router = express.Router();
 const Restaurant = require('../models/restaraunt');
 
 // Index Route
- router.get('/', async (req, res, next) => {
-
+ router.get('/', async (req, res) => {
+   console.log(req.session.logged, 'CHECKING IF LOGGED IN ')
      try  {
-      const allRestaurants = await Restaurant.find();
-        console.log(allRestaurants, ' this is get all')
-      res.json({
-        status: 200,
-        data: allRestaurants
-      });
+
+        const allRestaurants = await Restaurant.find();
+
+        res.json({
+          status: 200,
+          data: allRestaurants
+        });
+
+
     } catch (err){
       res.send(err)
     }
@@ -20,13 +23,22 @@ const Restaurant = require('../models/restaraunt');
 //Add Route
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body, ' this is req.body');
-    const createdRestaurant = await Restaurant.create(req.body);
-    console.log('response happening?', createdRestaurant)
-    res.json({
-      status: 200,
-      data: createdRestaurant
-    });
+    if (req.session.logged === true) {
+      req.body.createdBy = req.session.username;
+      console.log(req.body.username, ' this is req.body');
+      const createdRestaurant = await Restaurant.create(req.body);
+      console.log('response happening?', createdRestaurant)
+      res.json({
+        status: 200,
+        data: createdRestaurant
+      });
+    } else {
+      res.json({
+        status: 200,
+        data: 'unsuccessful'
+      });
+    }
+
   } catch(err){
     console.log(err);
     res.send(err);

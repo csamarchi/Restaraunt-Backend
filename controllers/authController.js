@@ -3,8 +3,24 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
-router.post('/register', async (req,res,err) => {
-  console.log(req.session, ' this is session')
+router.get('/users', async (req, res) => {
+  try {
+      console.log("INVOKES", req.body);
+      const allUsers = await User.find();
+      console.log("ALLL USERS", allUsers);
+      res.json({
+        status: 200,
+        data: allUsers
+      });
+
+
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+router.post('/register', async (req,res) => {
+
 try{
   const password = req.body.password;
   const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -12,17 +28,19 @@ try{
   const userDbEntry = {};
   userDbEntry.username = req.body.username;
   userDbEntry.password = passwordHash;
+  console.log(req.session)
 
-
-let createdUser= await User.create(userDbEntry,(err,createdUser) => {
+  const createdUser = await User.create(userDbEntry);
     req.session.logged = true;
     req.session.username = req.body.username;
-    console.log(createdUser);
+    req.session.save();
+    console.log(createdUser, 'checking the session');
+
     res.json({
       status: 200,
-      data: 'register successful'
+      data: createdUser
     });
-  })
+
 }
    catch(err){
     console.log(err);
@@ -31,16 +49,31 @@ let createdUser= await User.create(userDbEntry,(err,createdUser) => {
 
 })
 
-router.post('/', async (req, res) => {
-  console.log(req.body, ' this is session')
+router.post('/login', async (req, res) => {
   try {
-    const user = await User.create(req.body);
-    req.session.logged = true;
-    req.session.username = req.body.username;
-    res.json({
-      status: 200,
-      data: 'login successful'
-    });
+    console.log(req.body, ' this is session')
+    const user = await User.findOne({'username': req.body.username});
+    if (user) {
+      if ((bcrypt.compareSync(req.body.password, user.password))) {
+          req.session.logged = true;
+          req.session.username = req.body.username;
+          req.session.save();
+          res.json({
+            status: 200,
+            data: 'login successful'
+          });
+} else {
+        res.json({
+          status: 200,
+          data: 'login unsuccessful'
+        });
+}
+} else {
+      res.json({
+        status: 200,
+        data: 'login unsuccessful'
+      });
+}
   } catch(err){
     console.log(err);
     res.send(err);
