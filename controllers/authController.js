@@ -24,7 +24,6 @@ let createdUser= await User.create(userDbEntry,(err,createdUser) => {
     });
   })
 }
-
    catch(err){
     console.log(err);
     res.send(err);
@@ -63,15 +62,6 @@ router.get('/logout', (req, res) => {
    }
  })
 })
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;
