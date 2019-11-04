@@ -4,13 +4,20 @@ const Restaurant = require('../models/restaraunt');
 
 // Index Route
  router.get('/', async (req, res) => {
-   console.log(req.session.logged, 'CHECKING IF LOGGED IN ')
+   console.log(req.session, 'CHECKING IF LOGGED IN ')
      try  {
-        const allRestaurants = await Restaurant.find();
-        res.json({
-          status: 200,
-          data: allRestaurants
-        });
+       if (req.session.logged === true) {
+         const allRestaurants = await Restaurant.find();
+         res.json({
+           status: 200,
+           data: allRestaurants
+         });
+       } else {
+         res.json({
+           status: 200,
+           data: 'unsuccessful'
+         })
+       }
     } catch (err){
       res.send(err)
     }

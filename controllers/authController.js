@@ -12,41 +12,50 @@ router.get('/users', async (req, res) => {
         status: 200,
         data: allUsers
       });
-
-
   } catch (err) {
     res.send(err)
   }
 })
 
-router.post('/register', async (req,res) => {
-
-try{
-  const password = req.body.password;
-  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-  const userDbEntry = {};
-  userDbEntry.username = req.body.username;
-  userDbEntry.password = passwordHash;
-  console.log(req.session)
-
-  const createdUser = await User.create(userDbEntry);
-    req.session.logged = true;
-    req.session.username = req.body.username;
-    req.session.save();
-    console.log(createdUser, 'checking the session');
-
+//Check if Logged in
+router.get('/user', async (req, res) => {
+  if (req.session.logged) {
     res.json({
       status: 200,
-      data: createdUser
-    });
-
-}
-   catch(err){
-    console.log(err);
-    res.send(err);
+      data: true,
+    })
+  } else {
+    res.json({
+      status: 200,
+      data: false,
+    })
   }
+})
 
+router.post('/register', async (req,res) => {
+  try{
+    const password = req.body.password;
+    const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+
+    const userDbEntry = {};
+    userDbEntry.username = req.body.username;
+    userDbEntry.password = passwordHash;
+    console.log(req.session)
+
+    const createdUser = await User.create(userDbEntry);
+      req.session.logged = true;
+      req.session.username = req.body.username;
+      req.session.save();
+      console.log(createdUser, 'checking the session');
+      res.json({
+        status: 200,
+        data: createdUser
+      });
+  }
+     catch(err){
+      console.log(err);
+      res.send(err);
+    }
 })
 
 router.post('/login', async (req, res) => {
@@ -58,6 +67,7 @@ router.post('/login', async (req, res) => {
           req.session.logged = true;
           req.session.username = req.body.username;
           req.session.save();
+          console.log('req.session login', req.session);
           res.json({
             status: 200,
             data: 'login successful'
