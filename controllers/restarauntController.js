@@ -6,15 +6,11 @@ const Restaurant = require('../models/restaraunt');
  router.get('/', async (req, res) => {
    console.log(req.session.logged, 'CHECKING IF LOGGED IN ')
      try  {
-
         const allRestaurants = await Restaurant.find();
-
         res.json({
           status: 200,
           data: allRestaurants
         });
-
-
     } catch (err){
       res.send(err)
     }
