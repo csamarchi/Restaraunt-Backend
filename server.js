@@ -36,6 +36,9 @@ app.use('/api/v1/restaraunt', restarauntController);
 app.use('/auth', authController);
 // app.use('/user', userController);
 
+app.get('/testing', (req, res) => {
+  res.send("HELLO!!!")
+})
 
 app.listen(process.env.PORT || 9000, () => {
   console.log('listening on port 9000');
